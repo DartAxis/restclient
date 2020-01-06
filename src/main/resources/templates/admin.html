@@ -1,0 +1,205 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="admin dashboard">
+    <meta name="author" content="Dart Axis">
+    <title>Admin Dashboard</title>
+    <link rel="icon" href="../static/img/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+
+    <input type="hidden" name="token" th:value="${session.token}"/>
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <a class="navbar-brand" href="/">Ru.Dartinc.Spring Boot + Bootstrap+Ajax+jQuery</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <form action="/logout" method="post">
+                        <button type="submit" class="btn btn-success">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-pills flex-column">
+                <br>
+                <li class="nav-item"><a href="/admin" class="nav-link active">Администратор <span class="sr-only">(current)</span></a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h1 class="page-header">Руль Админа</h1>
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="nav-link active"><a href="#tab1" role="tab" data-toggle="tab" id="resetTable">Таблица
+                    пользователей</a></li>
+                <li role="presentation" class="nav-link"><a href="#tab2" role="tab" data-toggle="tab">Добавить пользователя</a></li>
+            </ul>
+
+            <div class="tab-content" style="background: white">
+                <div role="tabpanel" class="tab-pane active p-4 mx-4" id="tab1">
+                    <br><h4 style="text-indent:15px;"><b> Список всех пользователей</b></h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" id="tableUser">​
+                            <thead>
+                            <tr class="text-center">
+                                <th>ID</th>
+                                <th>Role</th>
+                                <th>Login</th>
+                                <th>Password</th>
+                                <th>Email</th>
+                                <th>Edit</th>
+                            </tr>
+                            </thead>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="editUser">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Редактирование пользователя </h4>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            <div class="row justify-content-center">
+                                                <div class="col-md-4"></div>
+                                                <div class="col-md-4 text-center justify-content-center">
+                                                    <form id="updateUser">
+                                                        <h4>ID</h4>
+                                                        <input id="updateUserId" class="form-control text-center"
+                                                               type="text"
+                                                               name="id">
+
+                                                        <h4>Имя</h4>
+                                                        <input id="updateUserName" class="form-control text-center"
+                                                               type="text"
+                                                               name="name">
+
+                                                        <h4>Email</h4>
+                                                        <input id="updateUserEmail" class="form-control text-center"
+                                                               type="text"
+                                                               name="email">
+
+                                                        <h4>Логин</h4>
+                                                        <input id="updateUserLogin" class="form-control text-center"
+                                                               type="text"
+                                                               name="login">
+
+                                                        <h4>Пароль</h4>
+                                                        <input id="updateUserPass" class="form-control text-center"
+                                                               type="text"
+                                                               name="password" readonly>
+
+                                                        <h4>Роль</h4>
+                                                        <select id="updateUserRole" class="form-control text-center"
+                                                                type="text"
+                                                                name="role">
+                                                            <option value="ROLE_USER">ROLE_USER</option>
+                                                            <option value="ROLE_ADMIN">ROLE_ADMIN</option>
+                                                        </select>
+                                                    </form>
+                                                </div>
+                                                <div class="col-md-4"></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary"
+                                                    data-dismiss="modal">
+                                                Закрыть
+                                            </button>
+                                            <button id="updateFormUser" form="updateUser" type="submit"
+                                                    class="btn btn-primary" data-dismiss="modal">
+                                                Сохранить
+                                            </button>
+                                            <button id="deleteUser" class="btn btn-danger" name="id" type="submit"
+                                                    data-dismiss="modal">
+                                                Удалить
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Modal -->
+
+                        </table>
+                    </div>
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="tab2">
+                    <h4><b>Добавление пользователя</b></h4>
+                    <form id="addForm">
+                        <div class="row justify-content-center">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4 mb-4 text-center justify-content-center">
+                                <h4>Имя</h4>
+                                <input type="text" name="name" class="form-control text-center" id="addName"/>
+                                <h4>Email</h4>
+                                <input type="text" name="address" class="form-control  text-center" id="addAddress"/>
+                                <h4>Логин</h4>
+                                <input type="text" name="login" class="form-control text-center" id="addLogin"/>
+                                <h4>Пароль</h4>
+                                <input type="text" name="password" class="form-control text-center" id="addPassword"/>
+                                <h4>Роль</h4>
+                                <select class="custom-select form-control text-center" id="addRole" name="role"
+                                        type="text">
+                                    <option selected value="ROLE_USER">ROLE_USER</option>
+                                    <option value="ROLE_ADMIN">ROLE_ADMIN</option>
+                                </select>
+                                <br>
+                                <button type="submit" class="btn btn-success" id="addFormUser">
+                                    Добавить
+                                </button>
+                            </div>
+                            <div class="col-md-4"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>-->
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<script src="../static/js/script.js"></script>
+</body>
+</html>
